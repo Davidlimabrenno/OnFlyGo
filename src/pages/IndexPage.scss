@@ -1,0 +1,162 @@
+/* =======================
+  Estilização Geral
+======================= */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* =======================
+    Cabeçalho
+  ======================= */
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+}
+
+/* =======================
+    Seção de Busca
+  ======================= */
+.search-container {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Título da Seção */
+.search-container h2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* =======================
+    Barra de Pesquisa
+  ======================= */
+.search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.search-bar .q-select {
+  width: 100%;
+  max-width: 500px; /* Ajuste para expandir */
+  flex-grow: 1;
+}
+
+/* Botão de Busca */
+.q-btn {
+  width: 220px;
+  font-size: 16px;
+  font-weight: bold;
+  height: 45px;
+}
+
+/* =======================
+    Filtros - "Ordenar por"
+  ======================= */
+.filters {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+  padding-right: 10px;
+}
+
+/* Estilo do "Ordenar por" */
+.filter-select {
+  font-size: 14px;
+  color: #007bff; /* Azul conforme o protótipo */
+  border: none; /* Remove borda */
+  background: none; /* Remove fundo branco */
+  cursor: pointer;
+  text-align: right;
+  padding: 5px 0;
+}
+
+/* Removendo a borda do q-select */
+.filter-select .q-field__control {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Ajuste de fonte e cor do label */
+.filter-select .q-field__label {
+  font-size: 14px;
+  color: #007bff;
+  font-weight: normal;
+}
+
+/* Adiciona efeito ao passar o mouse */
+.filter-select:hover {
+  text-decoration: underline;
+}
+
+/* Corrige a posição do "Ordenar por" */
+.q-select {
+  min-width: auto !important;
+  width: fit-content !important;
+}
+
+/* =======================
+    Lista de Hotéis
+  ======================= */
+.hotel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.hotel-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+.hotel-card img {
+  width: 200px;
+  height: 140px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.hotel-card .hotel-info {
+  flex-grow: 1;
+}
+
+.hotel-card h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* =======================
+    Mensagem de Erro
+  ======================= */
+.banner-error {
+  text-align: center;
+  color: #d32f2f;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  background: #ffebee;
+  border-radius: 5px;
+}

@@ -1,0 +1,191 @@
+.hotel-drawer {
+  width: 800px !important;
+  background: #fff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+
+  max-height: 120vh;
+  overflow-y: auto;
+  z-index: 1001;
+}
+
+/* Botão de fechar no topo do drawer */
+.drawer-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+/* Overlay do Quasar (película) */
+.q-drawer--overlay .q-drawer__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  z-index: 1000;
+}
+
+/* Seção de título e endereço */
+.hotel-header-section {
+  padding: 24px 24px 0 24px;
+
+  .hotel-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  .hotel-address {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 16px;
+  }
+}
+
+/* Carrossel minimalista */
+.hotel-carousel {
+  background-color: #fff;
+  height: 400px;
+  position: relative;
+}
+
+/* Imagem do carrossel */
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Contador do carrossel */
+.carousel-counter {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  z-index: 2;
+}
+
+/* Conteúdo principal */
+.hotel-info {
+  padding: 24px;
+  background-color: #fff;
+}
+
+/* Facilidades */
+.hotel-facilities {
+  margin-bottom: 24px;
+
+  .facilities-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 12px;
+  }
+
+  .hotel-amenities-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .facilities-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+  }
+}
+
+/* Exemplo de estilo para as chips */
+.facilities-chip {
+  background-color: #fff !important;
+  color: #555 !important;
+  border: 1px solid #ddd !important;
+  border-radius: 20px !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+
+  .q-icon {
+    color: #777 !important;
+    margin-right: 4px;
+  }
+}
+
+/* Seção de descrição */
+.hotel-description {
+  margin-bottom: 24px;
+
+  .description-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.4;
+  }
+}
+
+/* Detalhes (preço, estrelas, cidade) */
+.hotel-details {
+  font-size: 14px;
+  color: #444;
+  display: flex;
+  align-items: center;
+
+  .price {
+    font-weight: bold;
+    color: #d32f2f;
+  }
+  .sep {
+    margin: 0 8px;
+    color: #ccc;
+  }
+}
+
+/* Botão de facilidades */
+.facilities-btn {
+  border: 1px solid #007bff !important;
+  color: #007bff !important;
+  background-color: transparent !important;
+  border-radius: 25px !important;
+  padding: 8px 16px !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .hotel-drawer {
+    width: 95% !important;
+    max-height: 90vh;
+  }
+
+  .hotel-header-section {
+    padding: 16px;
+
+    .hotel-name {
+      font-size: 18px;
+    }
+  }
+
+  .hotel-info {
+    padding: 16px;
+  }
+}
