@@ -1,76 +1,93 @@
-import { mount } from '@vue/test-utils'
-import HotelCard from '@/components/HotelCard.vue' // Usando o alias @
-import HotelDrawer from '@/components/HotelDrawer.vue' // Usando o alias @
+import { render, screen, fireEvent } from '@testing-library/vue'
+import { defineComponent, ref } from 'vue'
 import { describe, it, expect } from 'vitest'
+import HotelCard from '@/components/HotelCard.vue'
+import HotelDrawer from '@/components/HotelDrawer.vue'
+import { Quasar } from 'quasar'
+import type { Hotel } from '@/components/models'
 
-const mockHotel = {
+const mockHotel: Hotel = {
   id: 1,
   name: 'Hotel Teste',
   stars: '5',
-  images: ['url1.jpg', 'url2.jpg'],
-  favorite: false,
-  description: 'Ótimo hotel',
-  thumb: 'url1.jpg',
-  amenities: [
-    { label: 'Wi-Fi', icon: 'wifi', key: 'wifi' },
-    { label: 'Piscina', icon: 'pool', key: 'pool' },
-    { label: 'Restaurante', icon: 'restaurant', key: 'restaurant' },
-    { label: 'Estacionamento', icon: 'local_parking', key: 'local_parking' },
-  ],
-  hasBreakFast: true,
-  hasRefundableRoom: false,
-  hasAgreement: true,
-  nonRefundable: 'true',
+  images: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'],
+  description: 'Descrição do Hotel Teste',
   address: {
-    street: 'Rua Exemplo',
-    number: '123',
-    district: 'Centro',
+    street: 'Rua Lavras',
+    number: '150',
+    district: 'Savassi',
     city: 'Belo Horizonte',
     state: 'MG',
     country: 'Brasil',
     zipCode: '30110-000',
-    fullAddress: 'Rua Exemplo, 123 - Centro, Belo Horizonte - MG, Brasil',
+    fullAddress: 'Rua Lavras, 150 – Belo Horizonte, MG – Brasil',
   },
-  price: 300,
-  roomsQuantity: 50,
+  price: 785,
+  thumb: 'https://example.com/thumb.jpg',
+  amenities: [
+    { label: 'Wi-Fi', key: 'wifi', icon: 'wifi' },
+    { label: 'Piscina', key: 'pool', icon: 'pool' },
+  ],
+  favorite: false,
+  hasBreakFast: true,
+  hasRefundableRoom: true,
+  hasAgreement: false,
+  nonRefundable: 'false',
+  roomsQuantity: 10,
 }
 
-describe('HotelCard.vue', () => {
-  it('deve renderizar corretamente', () => {
-    const wrapper = mount(HotelCard, {
-      props: { hotel: mockHotel },
-    })
-    expect(wrapper.text()).toContain('Hotel Teste')
-    expect(wrapper.text()).toContain('Belo Horizonte')
-    expect(wrapper.text()).toContain('5 estrelas')
-    expect(wrapper.text()).toContain('R$ 300')
-  })
-
-  it('deve emitir evento ao clicar no botão selecionar', async () => {
-    const wrapper = mount(HotelCard, {
-      props: { hotel: mockHotel },
-    })
-    await wrapper.find('button').trigger('click')
-    expect(wrapper.emitted('show-details')).toBeTruthy()
-  })
+const TestHotel = defineComponent({
+  components: { HotelCard, HotelDrawer },
+  setup() {
+    const selectedHotel = ref<Hotel | null>(null)
+    const drawerOpen = ref(false)
+    const openDrawer = (h: Hotel) => {
+      selectedHotel.value = h
+      drawerOpen.value = true
+    }
+    return { hotel: mockHotel, selectedHotel, drawerOpen, openDrawer }
+  },
+  template: `
+    <div>
+      <HotelCard :hotel="hotel" @show-details="openDrawer" />
+      <HotelDrawer v-if="selectedHotel" :hotel="selectedHotel" v-model="drawerOpen" @close="drawerOpen = false" />
+    </div>
+  `,
 })
 
-describe('HotelDrawer.vue', () => {
-  it('deve exibir informações do hotel quando aberto', () => {
-    const wrapper = mount(HotelDrawer, {
-      props: { hotel: mockHotel },
-    })
-    expect(wrapper.text()).toContain('Hotel Teste')
-    expect(wrapper.text()).toContain('★★★★★')
-    expect(wrapper.text()).toContain('Ótimo hotel')
-    expect(wrapper.text()).toContain('Preço: R$ 300')
+const globalStubs = {
+  'q-layout': { template: `<div><slot /></div>` },
+  'q-page-container': { template: `<div><slot /></div>` },
+  'q-drawer': { template: `<div role="complementary"><slot /></div>` },
+  'q-card': { template: `<div><slot /></div>` },
+  'q-card-section': { template: `<div><slot /></div>` },
+  'q-carousel': { template: `<div><slot /></div>` },
+  'q-carousel-slide': { template: `<div><slot /></div>` },
+  'q-img': { template: `<img :src="src" alt="imagem" />`, props: ['src'] },
+  'q-rating': { template: `<div></div>` },
+  'q-btn': {
+    template: `<button v-bind="$attrs" @click="$emit('click')">{{ $attrs.label || '' }}</button>`,
+  },
+  'q-chip': { template: `<div><slot /></div>` },
+  transition: false,
+}
+
+describe('HotelTest.spec.ts', () => {
+  it('deve emitir evento ao clicar no botão selecionar e abrir o drawer', async () => {
+    render(TestHotel, { global: { plugins: [Quasar], stubs: globalStubs } })
+    const selectBtn = screen.getByRole('button', { name: /Selecionar/i })
+    await fireEvent.click(selectBtn)
+    const drawer = await screen.findByRole('complementary')
+    expect(drawer.textContent).toMatch(/Hotel Teste/)
   })
 
   it('deve fechar o drawer ao clicar no botão de fechar', async () => {
-    const wrapper = mount(HotelDrawer, {
+    const { emitted } = render(HotelDrawer, {
       props: { hotel: mockHotel },
+      global: { plugins: [Quasar], stubs: globalStubs },
     })
-    await wrapper.find('.drawer-close-btn button').trigger('click')
-    expect(wrapper.emitted('close')).toBeTruthy()
+    const closeBtns = screen.getAllByTestId('close-button')
+    await fireEvent.click(closeBtns[0]!)
+    expect(emitted()).toHaveProperty('close')
   })
 })

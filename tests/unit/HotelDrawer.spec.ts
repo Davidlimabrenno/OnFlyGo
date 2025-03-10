@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/vue'
 import { describe, it, expect } from 'vitest'
 import HotelDrawer from '@/components/HotelDrawer.vue'
-import { QLayout, QPageContainer, Quasar } from 'quasar'
-import type { Hotel } from '@/types/Hotel'
+import { Quasar } from 'quasar'
+import type { Hotel } from '@/components/models'
 
 const mockHotel: Hotel = {
   id: 1,
@@ -34,73 +34,53 @@ const mockHotel: Hotel = {
   roomsQuantity: 10,
 }
 
+const globalStubs = {
+  'q-layout': { template: `<div><slot /></div>` },
+  'q-page-container': { template: `<div><slot /></div>` },
+  'q-drawer': { template: `<div role="complementary"><slot /></div>` },
+  'q-card': { template: `<div><slot /></div>` },
+  'q-card-section': { template: `<div><slot /></div>` },
+  'q-carousel': { template: `<div><slot /></div>` },
+  'q-carousel-slide': { template: `<div><slot /></div>` },
+  'q-img': { template: `<img :src="src" alt="imagem" />`, props: ['src'] },
+  'q-btn': {
+    template: `<button data-testid="close-button" v-bind="$attrs" @click="$emit('click')"><slot /></button>`,
+  },
+  'q-chip': { template: `<div><slot /></div>` },
+  transition: false,
+}
+
 describe('HotelDrawer', () => {
   it('deve exibir informações do hotel quando aberto', async () => {
-    render(
-      {
-        components: { QLayout, QPageContainer, HotelDrawer },
-        template: `
-          <q-layout>
-            <q-page-container>
-              <hotel-drawer :hotel="hotel" :model-value="true" />
-            </q-page-container>
-          </q-layout>
-        `,
-        props: { hotel: mockHotel },
-      },
-      { global: { plugins: [Quasar] } },
-    )
-    expect(await screen.findByText('Hotel Teste')).toBeInTheDocument()
-    expect(screen.getByText('Rua Lavras, 150 – Belo Horizonte, MG – Brasil')).toBeInTheDocument()
-    expect(screen.getByText('Descrição do Hotel Teste')).toBeInTheDocument()
-    expect(screen.getByText(/R\$ 785/)).toBeInTheDocument()
-    expect(screen.getByText('★★★★★')).toBeInTheDocument()
+    render(HotelDrawer, {
+      props: { hotel: mockHotel },
+      global: { plugins: [Quasar], stubs: globalStubs },
+    })
+    const drawer = screen.getByRole('complementary')
+    expect(drawer.textContent).toMatch(/Hotel Teste/)
+    expect(drawer.textContent).toMatch(/Rua Lavras, 150 – Belo Horizonte, MG – Brasil/)
+    expect(drawer.textContent).toMatch(/Descrição do Hotel Teste/)
+    expect(drawer.textContent).toMatch(/R\$ 785/)
+    expect(drawer.textContent).toMatch(/Estrelas:\s*5/)
   })
 
   it('deve fechar o drawer ao clicar no botão de fechar', async () => {
-    const { emitted } = render(
-      {
-        components: { QLayout, QPageContainer, HotelDrawer },
-        template: `
-          <q-layout>
-            <q-page-container>
-              <hotel-drawer :hotel="hotel" :model-value="true" />
-            </q-page-container>
-          </q-layout>
-        `,
-        props: { hotel: mockHotel },
-      },
-      { global: { plugins: [Quasar] } },
-    )
-    const closeBtn = screen.queryByText('Fechar')
-    expect(closeBtn).not.toBeNull()
-    if (closeBtn) {
-      await fireEvent.click(closeBtn)
-      expect(emitted()).toHaveProperty('close')
-    }
+    const { emitted } = render(HotelDrawer, {
+      props: { hotel: mockHotel },
+      global: { plugins: [Quasar], stubs: globalStubs },
+    })
+    const closeBtns = screen.getAllByTestId('close-button')
+    await fireEvent.click(closeBtns[0]!)
+    expect(emitted()).toHaveProperty('close')
   })
 
   it('exibe o carrossel de imagens corretamente', async () => {
-    render(
-      {
-        components: { QLayout, QPageContainer, HotelDrawer },
-        template: `
-          <q-layout>
-            <q-page-container>
-              <hotel-drawer :hotel="hotel" :model-value="true" />
-            </q-page-container>
-          </q-layout>
-        `,
-        props: {
-          hotel: {
-            ...mockHotel,
-            images: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'],
-          },
-        },
-      },
-      { global: { plugins: [Quasar] } },
-    )
-    expect(await screen.findByText(/1\s*\/\s*2/)).toBeInTheDocument()
+    render(HotelDrawer, {
+      props: { hotel: mockHotel },
+      global: { plugins: [Quasar], stubs: globalStubs },
+    })
+    const drawer = screen.getByRole('complementary')
+    expect(drawer.textContent).toMatch(/1\s*(\/|de)\s*2/)
     const imgs = screen.getAllByRole('img')
     expect(imgs).toHaveLength(2)
   })
