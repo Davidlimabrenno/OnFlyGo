@@ -1,0 +1,16 @@
+.filters {
+  display: flex;
+  justify-content: flex-start; /* Alinha à esquerda */
+  margin-top: 10px;
+}
+
+.filter-select {
+  background: white;
+  border-radius: 8px;
+  box-shadow: none;
+  font-weight: bold;
+  padding: 5px 10px;
+  border: 0px solid #ccc;
+  width: 200px; /* Mantém tamanho adequado */
+  border-bottom: 0px;
+}

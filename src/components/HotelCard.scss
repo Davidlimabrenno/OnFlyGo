@@ -1,0 +1,135 @@
+.hotel-card {
+  margin-bottom: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Linha principal (3 colunas) */
+.hotel-card-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Coluna da imagem (carrossel) */
+.hotel-card-img-col {
+  width: 450px; /* Largura maior para a imagem */
+  flex-shrink: 0;
+  margin-right: 24px;
+}
+
+/* Carrossel com bordas arredondadas */
+.hotel-card-carousel {
+  height: 300px; /* Altura maior do carrossel */
+  background-color: #fff;
+  border-radius: 12px; /* Bordas arredondadas do contêiner */
+  overflow: hidden;
+
+  .q-carousel__slides {
+    border-radius: 12px; /* Garante que as imagens sigam o contorno arredondado */
+    overflow: hidden;
+  }
+}
+
+/* Imagem dentro do carrossel */
+.hotel-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Se quiser forçar bordas ainda mais arredondadas na imagem:
+       border-radius: 12px;
+       Mas se .q-carousel__slides já tem overflow: hidden,
+       as imagens ficarão cortadas no mesmo raio.
+    */
+}
+
+/* Coluna das infos */
+.hotel-card-info-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hotel-card-header {
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  color: #333;
+}
+
+.hotel-card-location {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.6rem;
+}
+
+.hotel-card-stars {
+  margin-bottom: 0.6rem;
+}
+
+.hotel-card-tag {
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #666;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 4px;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  width: 100px;
+}
+
+/* Coluna do preço e botão */
+.hotel-card-price-col {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.hotel-card-price-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  color: #333;
+}
+
+.hotel-card-subprice {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.hotel-card-select-btn {
+  width: 140px;
+  font-weight: bold;
+  text-transform: none;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+/* Responsividade (exemplo) */
+@media (max-width: 768px) {
+  .hotel-card-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hotel-card-img-col {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 16px;
+  }
+
+  .hotel-card-price-col {
+    width: 100%;
+    align-items: flex-start;
+    margin-top: 16px;
+  }
+}
